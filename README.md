@@ -1,10 +1,12 @@
 # qt6bionic
 
-Dockerfile for Ubuntu 18.04 Bionic with Qt 6.1.3
+Dockerfile to build **Ubuntu 18.04 Bionic** image with _ready-to-use_ **Qt 6**
 
-See prebuilt qtbase image on [docker hub](https://hub.docker.com/r/omergoktas/qt6bionic)
+Pull prebuilt docker image from [Docker Hub](https://hub.docker.com/r/omergoktas/qt6bionic) (_qtbase_ **only**):
 
-Based on [this](https://github.com/wiktorguz/Qt6-docker)
+    sudo docker pull omergoktas/qt6bionic:qtbase
+
+> Based on the [code](https://github.com/wiktorguz/Qt6-docker) (_thanks to [@wiktorguz](https://github.com/wiktorguz)_)
 
 ## How to build an image
 
@@ -17,12 +19,12 @@ Based on [this](https://github.com/wiktorguz/Qt6-docker)
 
         sudo docker build --tag qt6bionic .
 
-- Or build the image with a specific Qt module (i.e., qtbase):
+- **or** build the image with a specific Qt module (i.e., qtbase):
 
         sudo docker build --build-arg QT_MODULE=qtbase --tag qt6bionic .
 
-- Or build the image with a specific Qt version:
+- **or** build the image with a specific Qt version:
 
         sudo docker build --build-arg QT_MAJ=6.1 --build-arg QT_MIN=1 --tag qt6bionic .
 
-> You may need to modify the Dockerfile and **base** your build on a higher version of Ubuntu (i.e., 20.04) in order to build newer versions of the Qt successfully (due to older versions of GCC being shipped on 18.04).
+> You may need to modify the Dockerfile and **base** your image on a newer version of Ubuntu (i.e., 20.04) in order to build newer versions of the Qt successfully (due to older versions of GCC being shipped on 18.04).
