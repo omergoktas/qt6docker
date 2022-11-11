@@ -70,4 +70,4 @@ WORKDIR /home/qt
 
 COPY --from=builder /usr/local /usr/local
 
-RUN wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage && chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+RUN wget https://github.com/omergoktas/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage && chmod a+x linuxdeployqt-continuous-x86_64.AppImage
