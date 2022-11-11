@@ -19,10 +19,10 @@ Based on [this](https://github.com/wiktorguz/Qt6-docker)
 
 - Or build the image with a specific Qt module (i.e., qtbase):
 
-        sudo docker build --build-arg QT_MODULE=qtbase qt6bionic .
+        sudo docker build --build-arg QT_MODULE=qtbase --tag qt6bionic .
 
 - Or build the image with a specific Qt version:
 
-        sudo docker build --build-arg QT_MAJ=6.1 --build-arg QT_MIN=1 qt6bionic .
+        sudo docker build --build-arg QT_MAJ=6.1 --build-arg QT_MIN=1 --tag qt6bionic .
 
 > You may need to modify the Dockerfile and **base** your build on a higher version of Ubuntu (i.e., 20.04) in order to build newer versions of the Qt successfully (due to older versions of GCC being shipped on 18.04).
