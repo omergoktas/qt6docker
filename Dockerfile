@@ -43,7 +43,6 @@ RUN pip3 install cmake ninja
 
 FROM base as builder
 
-# If set, build that module only, i.e., qtbase
 ARG QT_SRC_URL
 ARG QT_MODULE
 ARG QT_MAJ=6.1

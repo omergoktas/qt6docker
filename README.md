@@ -2,7 +2,7 @@
 
 Dockerfile to build **Qt 6**
 
-You can pull a prebuilt docker image from [Docker Hub](https://hub.docker.com/r/omergoktas/qt6docker) (_qtbase_ **only**):
+You can pull a prebuilt Ubuntu 20.04 image with Qt 6 from [Docker Hub](https://hub.docker.com/r/omergoktas/qt6docker) (_qtbase_ **only**):
 
 
 ```bash
