@@ -50,19 +50,16 @@ ARG QT_MAJ=6.1
 ARG QT_MIN=3
 ARG QT_VER=${QT_MAJ}.${QT_MIN}
 
-RUN if [ -z "$QT_SRC_URL" ]; then { \
-        wget "$QT_SRC_URL"; \
-        tar -xf qt*; \
-        mv qt* qtworkspace; \
-    }; elif [ -z "$QT_MODULE" ]; then { \
-        wget https://download.qt.io/archive/qt/${QT_MAJ}/${QT_VER}/single/qt-everywhere-src-${QT_VER}.tar.xz; \
-        tar -xf qt-everywhere-src-${QT_VER}.tar.xz; \
-        mv qt-everywhere-src-${QT_VER} qtworkspace; \
+RUN if [ -n "$QT_SRC_URL" ]; then { \
+        wget -O qtworkspace.tar.xz "$QT_SRC_URL"; \
+    }; elif [ -n "$QT_MODULE" ]; then { \
+        wget -O qtworkspace.tar.xz https://download.qt.io/archive/qt/${QT_MAJ}/${QT_VER}/submodules/${QT_MODULE}-everywhere-src-${QT_VER}.tar.xz; \
     }; else { \
-        wget https://download.qt.io/archive/qt/${QT_MAJ}/${QT_VER}/submodules/${QT_MODULE}-everywhere-src-${QT_VER}.tar.xz; \
-        tar -xf ${QT_MODULE}-everywhere-src-${QT_VER}.tar.xz; \
-        mv ${QT_MODULE}-everywhere-src-${QT_VER} qtworkspace; \
-    }; fi
+        wget -O qtworkspace.tar.xz https://download.qt.io/archive/qt/${QT_MAJ}/${QT_VER}/single/qt-everywhere-src-${QT_VER}.tar.xz; \
+    }; fi; \
+    mkdir qtworkspace; \
+    tar -xf qtworkspace.tar.xz -C qtworkspace --strip-components 1; \
+    rm -rf qtworkspace.tar.xz;
 
 WORKDIR qtworkspace
 RUN mkdir build
