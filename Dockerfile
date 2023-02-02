@@ -1,4 +1,6 @@
-FROM ubuntu:18.04 as base
+ARG BASE_IMAGE=ubuntu:20.04
+
+FROM $BASE_IMAGE as base
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -42,12 +44,17 @@ RUN pip3 install cmake ninja
 FROM base as builder
 
 # If set, build that module only, i.e., qtbase
+ARG QT_SRC_URL
 ARG QT_MODULE
 ARG QT_MAJ=6.1
 ARG QT_MIN=3
 ARG QT_VER=${QT_MAJ}.${QT_MIN}
 
-RUN if [ -z "$QT_MODULE" ]; then { \
+RUN if [ -z "$QT_SRC_URL" ]; then { \
+        wget "$QT_SRC_URL"; \
+        tar -xf qt*; \
+        mv qt* qtworkspace; \
+    }; elif [ -z "$QT_MODULE" ]; then { \
         wget https://download.qt.io/archive/qt/${QT_MAJ}/${QT_VER}/single/qt-everywhere-src-${QT_VER}.tar.xz; \
         tar -xf qt-everywhere-src-${QT_VER}.tar.xz; \
         mv qt-everywhere-src-${QT_VER} qtworkspace; \
@@ -70,4 +77,4 @@ WORKDIR /home/qt
 
 COPY --from=builder /usr/local /usr/local
 
-RUN wget https://github.com/omergoktas/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage && chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+RUN wget https://github.com/omergoktas/linuxdeployqt/releases/download/latest/linuxdeployqt-x86_64.AppImage && mv linuxdeployqt-x86_64.AppImage linuxdeployqt && chmod +x linuxdeployqt
