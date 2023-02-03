@@ -38,16 +38,16 @@ sudo docker pull omergoktas/qt6docker
     sudo docker build --build-arg QT_MAJ=6.1 --build-arg QT_MIN=1 --tag qt6docker .
     ```
 
-- **or** build the image with a specific version of Ubuntu:
-
-    ```bash
-    sudo docker build --build-arg BASE_IMAGE=ubuntu:18.04 --tag qt6docker .
-    ```
-
 - **or** build the image with a specific Qt source:
 
     ```bash
     sudo docker build --build-arg QT_SRC_URL="https://download.qt.io/development_releases/qt/6.5/6.5.0-beta2/submodules/qtbase-everywhere-src-6.5.0-beta2.tar.xz" --tag qt6docker .
+    ```
+
+- **or** build the image with a specific version of Ubuntu:
+
+    ```bash
+    sudo docker build --build-arg BASE_IMAGE=ubuntu:18.04 --tag qt6docker .
     ```
 
 > **Note** Qt 6.2.0+ requires Ubuntu 20.04+ to build successfully.
