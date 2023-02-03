@@ -1,9 +1,8 @@
 ARG BASE_IMAGE=ubuntu:20.04
-
 FROM $BASE_IMAGE as base
-
 ENV DEBIAN_FRONTEND noninteractive
 
+# Install dependencies
 RUN apt-get update && \
     apt-get install -y \
         python3-pip \
@@ -37,18 +36,17 @@ RUN apt-get update && \
         wget && \
     apt-get -qq clean && \
     rm -rf /var/lib/apt/lists/*
-
 RUN pip3 install --upgrade pip
 RUN pip3 install cmake ninja
 
 FROM base as builder
 
+# Download Qt source codes
 ARG QT_SRC_URL
 ARG QT_MODULE
 ARG QT_MAJ=6.1
 ARG QT_MIN=3
 ARG QT_VER=${QT_MAJ}.${QT_MIN}
-
 RUN if [ -n "$QT_SRC_URL" ]; then { \
         wget -O qtworkspace.tar.xz "$QT_SRC_URL"; \
     }; elif [ -n "$QT_MODULE" ]; then { \
@@ -57,20 +55,17 @@ RUN if [ -n "$QT_SRC_URL" ]; then { \
         wget -O qtworkspace.tar.xz https://download.qt.io/archive/qt/${QT_MAJ}/${QT_VER}/single/qt-everywhere-src-${QT_VER}.tar.xz; \
     }; fi; \
     mkdir qtworkspace; \
-    tar -xf qtworkspace.tar.xz -C qtworkspace --strip-components 1; \
-    rm -rf qtworkspace.tar.xz;
+    tar -xf qtworkspace.tar.xz -C qtworkspace --strip-components 1;
 
+# Build Qt
 WORKDIR qtworkspace
 RUN mkdir build
-WORKDIR build
-RUN cmake .. -GNinja
-RUN cmake --build . --parallel
-RUN cmake --install .
+RUN cmake -S . -B build -G Ninja
+RUN cmake --build build --parallel
+RUN cmake --install build --prefix /usr/local/qt6
 
+# Finalize installation
 FROM base
-
-WORKDIR /home/qt
-
-COPY --from=builder /usr/local /usr/local
-
-RUN wget https://github.com/omergoktas/linuxdeployqt/releases/download/latest/linuxdeployqt-x86_64.AppImage && mv linuxdeployqt-x86_64.AppImage linuxdeployqt && chmod +x linuxdeployqt
+WORKDIR /home/qt6
+COPY --from=builder /usr/local/qt6 /usr/local/qt6
+ENV PATH="$PATH:/usr/local/qt6/bin"
